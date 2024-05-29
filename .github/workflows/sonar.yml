@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - main
-      - '**' # Tüm branch'ler için PR oluşturulduğunda tetikler
+      - '**' # Tüm branch'ler için PR oluşturulduğunda tetikledflflgfr
 
 jobs:
   sonarQube:

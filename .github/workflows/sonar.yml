@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      - '**' # Bu, tüm branch'lerdeki push işlemlerini tetikler
+      - '**' # Tüm branch'lerdeki push işlemlerini tetikler
   pull_request:
     branches:
       - main
-      - '**' # Bu, tüm branch'ler için PR oluşturulduğunda tetikler
+      - '**' # Tüm branch'ler için PR oluşturulduğunda tetikler
 
 jobs:
   sonarQube:
@@ -18,10 +18,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up JDK 11
+    - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        distribution: 'adopt' # Burada istediğiniz Java dağıtımını belirleyin
+        java-version: '8'
 
     - name: Cache SonarQube dependencies
       uses: actions/cache@v2

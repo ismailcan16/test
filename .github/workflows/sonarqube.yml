@@ -3,16 +3,12 @@ name: SonarQube Analysis
 on:
   push:
     branches:
-      - master
-      - develop
-      - 'feature/*'
+      - '**'
   pull_request:
     branches:
-      - master
-      - develop
-      - 'feature/*'
+      - '**'
   schedule:
-    - cron: '0 0 * * *' 
+    - cron: '0 0 * * *'
 
 jobs:
   sonarqube-analysis:
@@ -25,14 +21,34 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14' 
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
 
       - name: Run SonarQube Scan
+        if: github.event_name == 'pull_request'
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
+
+      - name: Run SonarQube Scan for Branches
+        if: github.event_name != 'pull_request'
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=your_project_key
+            -Dsonar.sources=.
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}

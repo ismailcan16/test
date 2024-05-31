@@ -22,7 +22,7 @@ cd nodejs-projects/istediğiniz_proje/ && npm install
 
 Proje dizininde aşağıdaki komutu çalıştırarak projemizi başlatabiliriz.
 
-#### `yarn start`
+#### `npm install`
 
 Uygulamayı geliştirme modunda çalıştırır.\
 Projeyi tarayıcıda görüntülemek için [http://localhost:3000](http://localhost:3000) adresini açar.

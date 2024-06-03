@@ -1,4 +1,4 @@
-# Node.js Örnek Projeler
+# Node.js Projeler
 
 Bu projeler [NodeJS](https://nodejs.org/en/) kullanılarak geliştirdiğim Node.js projelerim.
 

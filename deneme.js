@@ -4,7 +4,7 @@
 // Gerekli modülleri dahil ediyoruz
 const fs = require('fs');
 
-// Okunacak dosyanın yolu
+
 const dosyaYolu = './ornek.txt';
 
 // Dosyadan veriyi okuyan fonksiyon

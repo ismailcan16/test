@@ -9,7 +9,7 @@ Bu projeler [NodeJS](https://nodejs.org/en/) kullanılarak geliştirdiğim Node.
 Ardından terminal ekranını açarak, projenin kurulmasını istediğiniz bir alana gelerek yapıştırıp çalıştırınız.
 
 ```
-git clone https://github.com/harundogdu/nodejs_projects.git
+git clone https://github.com/harundogdu/nodejs_projects.gisdfdft
 ```
 <br />
 Klonlama işleminin ardından terminal ekranına istediğiniz projenin adını yazarak, aşağıda bulunan kodu yapıştırıp çalıştırınız.

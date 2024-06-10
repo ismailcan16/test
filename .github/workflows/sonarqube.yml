@@ -3,10 +3,10 @@ name: SonarQube Scan
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   sonarQube:
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
@@ -38,4 +38,6 @@ jobs:
             -Dsonar.sources=. \
             -Dsonar.language=js \
             -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.exclusions=**/node_modules/**,**/*.spec.js
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.js \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}

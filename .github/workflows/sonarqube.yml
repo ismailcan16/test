@@ -17,12 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -31,14 +25,20 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Compile the project
-        run: |
-          ./mvnw clean compile
-
       - name: Run SonarQube scan
         env:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           npm install -g sonar-scanner
-          sonar-scanner -X
+          sonar-scanner \
+            -Dsonar.projectKey=SonarQube-Node.js \
+            -Dsonar.projectName=SonarQube-Node.js \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.sources=. \
+            -Dsonar.language=js \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.js \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -X

@@ -8,7 +8,7 @@ on:
     branches:
       - '**'
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # Günlük olarak saat 00:00'da çalıştır
 
 jobs:
   sonarqube-analysis:
@@ -27,20 +27,12 @@ jobs:
         run: npm install
 
       - name: Run SonarQube Scan
-        if: github.event_name == 'pull_request'
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
           docker run --rm \
-            -e SONAR_TOKEN=${{ secrets.SONAR_TOKEN }} \
-            -e SONAR_HOST_URL=${{ secrets.SONAR_HOST_URL }} \
-            -e GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
-            -e SONARQUBE_SCANNER_PARAMS="-Dsonar.pullrequest.key=${{ github.event.pull_request.number }} -Dsonar.pullrequest.branch=${{ github.head_ref }} -Dsonar.pullrequest.base=${{ github.base_ref }}" \
-            mc1arke/sonarqube-with-community-branch-plugin:latest
-
-      - name: Run SonarQube Scan for Branches
-        if: github.event_name != 'pull_request'
-        run: |
-          docker run --rm \
-            -e SONAR_TOKEN=${{ secrets.SONAR_TOKEN }} \
-            -e SONAR_HOST_URL=${{ secrets.SONAR_HOST_URL }} \
-            -e SONARQUBE_SCANNER_PARAMS="-Dsonar.projectKey=your_project_key -Dsonar.sources=. -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} -Dsonar.login=${{ secrets.SONAR_TOKEN }}" \
+            -e SONAR_TOKEN=${SONAR_TOKEN} \
+            -e SONAR_HOST_URL=${SONAR_HOST_URL} \
+            -e SONARQUBE_SCANNER_PARAMS="-Dsonar.projectKey=SonarQube-Node.js -Dsonar.sources=. -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}" \
             mc1arke/sonarqube-with-community-branch-plugin:latest

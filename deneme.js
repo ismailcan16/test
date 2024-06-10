@@ -18,7 +18,7 @@ function dosyadanOku(dosyaYolu, callback) {
     });
 }
 
-// Kelime sayısını hesaplayan fonksiyon
+// Kelime sayısını hesaplayan fonksiyonwertwrt
 function kelimeSayisiHesapla(metin) {
     const kelimeler = metin.split(/\s+/); // Metni boşluklara göre böler
     return kelimeler.length;

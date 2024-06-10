@@ -32,13 +32,6 @@ jobs:
         run: |
           npm install -g sonar-scanner
           sonar-scanner \
-            -Dsonar.projectKey=SonarQube-Node.js \
-            -Dsonar.projectName=SonarQube-Node.js \
-            -Dsonar.projectVersion=1.0 \
-            -Dsonar.sources=. \
-            -Dsonar.language=js \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.exclusions=**/node_modules/**,**/*.spec.js \
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -X

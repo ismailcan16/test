@@ -1,7 +1,7 @@
 // Bu örnek dosyada, basit bir Node.js komut dosyası oluşturacağız.
 // Bir dosyadan metin okuyacak ve kelimelerin sayısını hesaplayacak.
 
-// Gerekli modülleri dahil ediyoruz
+// Gerekli modülleri dahil
 const fs = require('fs');
 
 

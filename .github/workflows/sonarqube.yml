@@ -1,19 +1,18 @@
-name: SonarQube Analysis
+name: SonarQube Scan
 
 on:
   push:
     branches:
-      - '**'
+      - master
   pull_request:
     branches:
-      - '**'
-  schedule:
-    - cron: '0 0 * * *'
+      - master
 
 jobs:
-  sonarqube-analysis:
-    name: SonarQube Analysis
+  sonarQube:
+    name: SonarQube Scan
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -21,34 +20,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '4'  
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run SonarQube Scan
-        if: github.event_name == 'pull_request'
-        uses: sonarsource/sonarqube-scan-action@master
+      - name: Run SonarQube scan
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
-            -Dsonar.pullrequest.branch=${{ github.head_ref }}
-            -Dsonar.pullrequest.base=${{ github.base_ref }}
-            
-      - name: Run SonarQube Scan for Branches
-        if: github.event_name != 'pull_request'
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=test
-            -Dsonar.sources=.
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: |
+          npm install -g sonar-scanner
+          sonar-scanner \
+            -Dsonar.projectKey=SonarQube-Node.js \
+            -Dsonar.projectName=SonarQube-Node.js \
+            -Dsonar.projectVersion=1.0 \
+            -Dsonar.sources=. \
+            -Dsonar.language=js \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions=**/node_modules/**,**/*.spec.js

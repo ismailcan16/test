@@ -2,15 +2,11 @@ name: SonarQube Analysis
 
 on:
   push:
-    branches-ignore:
-      - '*'
-    tags-ignore:
-      - '*'
+    branches:
+      - main  # Ana dalınıza göre ayarlayın
   pull_request:
     branches:
-      - '*'  # Tüm branch'lerde çalışacak şekilde ayarlandı
-  schedule:
-    - cron: '0 0 * * *'  # Günlük olarak saat 00:00 UTC'de çalışacak (isteğe bağlı, kaldırabilirsiniz)
+      - main  # Ana dalınıza göre ayarlayın
 
 jobs:
   sonarqube_scan:
@@ -24,15 +20,22 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '4.x'  # Node.js 4.x sürümünü kullanacak şekilde ayarlandı
+          node-version: '14'  # Projede kullanılan Node.js sürümüne göre ayarlayın
 
       - name: Install dependencies
         run: npm install  # Projeye bağlı olarak gerekirse değiştirilebilir
 
-      - name: Run SonarQube Scanner
+      - name: SonarQube Scan
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # SonarQube token'ınızı buraya ekleyin
         run: |
-          # SonarQube analizini sonar-project.properties dosyasından yapılandırarak başlat
-          sonar-scanner -Dproject.settings=sonar-project.properties
+          sonar-scanner \
+            -Dsonar.projectKey=SonarQube-Node.js \
+            -Dsonar.organization=your_organization_key \
+            -Dsonar.sources=. \
+            -Dsonar.language=js \
+            -Dsonar.sourceEncoding=UTF-8 \
+            -Dsonar.exclusions='**/node_modules/**,**/*.spec.js' \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
